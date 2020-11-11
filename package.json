@@ -3,6 +3,8 @@
 	"displayName": "CSS Modules Companion",
 	"description": "Utilities for working with CSS Modules",
 	"version": "0.0.1",
+	"publisher": "GiacoCorsiglia",
+	"license": "MIT",
 	"engines": {
 		"vscode": "^1.51.0"
 	},
