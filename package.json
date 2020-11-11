@@ -11,7 +11,9 @@
 	],
 	"activationEvents": [
     "onCommand:css-modules-companion.openCorrespondingCssModule",
-    "onCommand:css-modules-companion.importCorrespondingCssModule"
+		"onCommand:css-modules-companion.importCorrespondingCssModule",
+		"onCommand:css-modules-companion.openComponentForCorrespondingCssModule",
+    "onCommand:css-modules-companion.toggleBetweenComponentAndCssModule"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -29,39 +31,53 @@
 			{
 				"command": "css-modules-companion.openCorrespondingCssModule",
 				"title": "Open Corresponding CSS Module",
-				"enablement": "editorLangId == typescript || editorLangId == typescriptreact || editorLangId == javascript || editorLangId == javascriptreact"
+				"enablement": "editorTextFocus && (editorLangId == typescript || editorLangId == typescriptreact || editorLangId == javascript || editorLangId == javascriptreact)"
 			},
 			{
 				"command": "css-modules-companion.importCorrespondingCssModule",
 				"title": "Import Corresponding CSS Module",
-				"enablement": "editorLangId == typescript || editorLangId == typescriptreact || editorLangId == javascript || editorLangId == javascriptreact"
+				"enablement": "editorTextFocus && (editorLangId == typescript || editorLangId == typescriptreact || editorLangId == javascript || editorLangId == javascriptreact)"
+			},
+			{
+				"command": "css-modules-companion.openComponentForCorrespondingCssModule",
+				"title": "Open Component for Corresponding CSS Module",
+				"enablement": "editorTextFocus && (editorLangId == css || editorLangId == scss || editorLangId == less)"
+			},
+			{
+				"command": "css-modules-companion.toggleBetweenComponentAndCssModule",
+				"title": "Toggle Between Component and Corresponding CSS Module",
+				"enablement": "editorTextFocus && (editorLangId == typescript || editorLangId == typescriptreact || editorLangId == javascript || editorLangId == javascriptreact || resourceFilename =~ /\\.module\\.(css|scss|sass|less)$/)"
 			}
 		],
 		"menus": {
       "commandPalette": [
 				{
 					"command": "css-modules-companion.openCorrespondingCssModule",
-					"when": "editorLangId == typescript || editorLangId == typescriptreact || editorLangId == javascript || editorLangId == javascriptreact"
+					"when": "editorTextFocus && (editorLangId == typescript || editorLangId == typescriptreact || editorLangId == javascript || editorLangId == javascriptreact)"
 				},
 				{
 					"command": "css-modules-companion.importCorrespondingCssModule",
-					"when": "editorLangId == typescript || editorLangId == typescriptreact || editorLangId == javascript || editorLangId == javascriptreact"
+					"when": "editorTextFocus && (editorLangId == typescript || editorLangId == typescriptreact || editorLangId == javascript || editorLangId == javascriptreact)"
+				},
+				{
+					"command": "css-modules-companion.openComponentForCorrespondingCssModule",
+					"when": "editorTextFocus && (editorLangId == css || editorLangId == scss || editorLangId == less)"
 				}
       ]
 		},
 		"keybindings": [
       {
-        "command": "css-modules-companion.openCorrespondingCssModule",
+        "command": "css-modules-companion.toggleBetweenComponentAndCssModule",
         "key": "ctrl+;",
         "mac": "cmd+;",
-        "when": "editorTextFocus && (editorLangId == typescript || editorLangId == typescriptreact || editorLangId == javascript || editorLangId == javascriptreact)"
+        "when": "editorTextFocus && (editorLangId == typescript || editorLangId == typescriptreact || editorLangId == javascript || editorLangId == javascriptreact || resourceFilename =~ /\\.module\\.(css|scss|sass|less)$/)"
       },
       {
         "command": "css-modules-companion.importCorrespondingCssModule",
         "key": "ctrl+shift+;",
         "mac": "cmd+shift+;",
         "when": "editorTextFocus && (editorLangId == typescript || editorLangId == typescriptreact || editorLangId == javascript || editorLangId == javascriptreact)"
-      }
+			}
     ]
 	},
 	"scripts": {

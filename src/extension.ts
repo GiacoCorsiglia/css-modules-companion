@@ -5,18 +5,33 @@ import { posix as path } from "path";
 const extensionName = "css-modules-companion";
 
 export function activate(context: vscode.ExtensionContext) {
-  const openDisposable = vscode.commands.registerCommand(
-    `${extensionName}.openCorrespondingCssModule`,
-    openCorrespondingCssModule
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      `${extensionName}.openCorrespondingCssModule`,
+      openCorrespondingCssModule
+    )
   );
 
-  const importDisposable = vscode.commands.registerCommand(
-    `${extensionName}.importCorrespondingCssModule`,
-    importCorrespondingCssModule
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      `${extensionName}.importCorrespondingCssModule`,
+      importCorrespondingCssModule
+    )
   );
 
-  context.subscriptions.push(openDisposable);
-  context.subscriptions.push(importDisposable);
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      `${extensionName}.openComponentForCorrespondingCssModule`,
+      openComponentForCorrespondingCssModule
+    )
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      `${extensionName}.toggleBetweenComponentAndCssModule`,
+      toggleBetweenComponentAndCssModule
+    )
+  );
 }
 
 function correspondingCssModuleUri() {
@@ -52,6 +67,27 @@ async function ensureUriExists(uri: vscode.Uri) {
   }
 }
 
+async function addImportForCssModule(
+  uri: vscode.Uri,
+  editor: vscode.TextEditor
+) {
+  const importPath = `./${path.basename(uri.path)}`;
+  const importLine = `import styles from "${importPath}";\n`;
+
+  const document = editor.document;
+
+  const text = document.getText();
+  if (text.includes(importPath)) {
+    // I guess it's already imported.
+    return;
+  }
+
+  editor.edit((editBuilder) => {
+    // Just insert it at the top and let the code action sort it later.
+    editBuilder.insert(document.positionAt(0), importLine);
+  });
+}
+
 async function openCorrespondingCssModule() {
   const uri = correspondingCssModuleUri();
 
@@ -79,19 +115,59 @@ async function importCorrespondingCssModule() {
     return;
   }
 
-  const importPath = `./${path.basename(uri.path)}`;
-  const importLine = `import styles from "${importPath}";\n`;
+  addImportForCssModule(uri, editor);
+}
 
-  const document = editor.document;
+async function openComponentForCorrespondingCssModule() {
+  const editor = vscode.window.activeTextEditor;
+  if (!editor) {
+    return null;
+  }
 
-  const text = document.getText();
-  if (text.includes(importPath)) {
-    // I guess it's already imported.
+  const moduleUri = editor.document.uri;
+  const p = moduleUri.path;
+
+  const dir = path.dirname(p);
+  const cssModuleExt = path.extname(p);
+  const cssModuleName = path.basename(p, cssModuleExt);
+
+  if (!cssModuleName.endsWith(".module")) {
     return;
   }
 
-  editor.edit((editBuilder) => {
-    // Just insert it at the top and let the code action sort it later.
-    editBuilder.insert(document.positionAt(0), importLine);
-  });
+  const name = cssModuleName.replace(/\.module$/, "");
+
+  const extensions = ["tsx", "jsx", "ts", "js"];
+  const uris = extensions.map((ext) =>
+    moduleUri.with({ path: path.join(dir, `${name}.${ext}`) })
+  );
+  const stats = uris.map((uri) =>
+    vscode.workspace.fs.stat(uri).then(
+      () => uri,
+      () => null
+    )
+  );
+  const componentUri = (await Promise.all(stats)).filter((uri) => !!uri)[0];
+
+  if (!componentUri) {
+    return;
+  }
+
+  const componentEditor = await vscode.window.showTextDocument(componentUri);
+  addImportForCssModule(moduleUri, componentEditor);
+}
+
+async function toggleBetweenComponentAndCssModule() {
+  const editor = vscode.window.activeTextEditor;
+  if (!editor) {
+    return null;
+  }
+
+  const p = editor.document.uri.path;
+
+  if (/\.module\.(css|scss|sass|less)$/.test(p)) {
+    openComponentForCorrespondingCssModule();
+  } else if (/\.(tsx|ts|jsx|js)$/.test(p)) {
+    openCorrespondingCssModule();
+  }
 }
