@@ -160,7 +160,7 @@ async function openComponentForCorrespondingCssModule() {
 async function toggleBetweenComponentAndCssModule() {
   const editor = vscode.window.activeTextEditor;
   if (!editor) {
-    return null;
+    return;
   }
 
   const p = editor.document.uri.path;
