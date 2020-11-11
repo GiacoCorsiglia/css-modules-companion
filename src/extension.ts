@@ -97,7 +97,7 @@ async function openCorrespondingCssModule() {
 
   await ensureUriExists(uri);
 
-  vscode.window.showTextDocument(uri);
+  showTextDocumentInSmartColumn(uri);
 }
 
 async function importCorrespondingCssModule() {
@@ -153,7 +153,7 @@ async function openComponentForCorrespondingCssModule() {
     return;
   }
 
-  const componentEditor = await vscode.window.showTextDocument(componentUri);
+  const componentEditor = await showTextDocumentInSmartColumn(componentUri);
   addImportForCssModule(moduleUri, componentEditor);
 }
 
@@ -170,4 +170,16 @@ async function toggleBetweenComponentAndCssModule() {
   } else if (/\.(tsx|ts|jsx|js)$/.test(p)) {
     openCorrespondingCssModule();
   }
+}
+
+function showTextDocumentInSmartColumn(uri: vscode.Uri) {
+  // This is currently the best we can do:
+  // https://github.com/microsoft/vscode/issues/15178
+  const existingEditor = vscode.window.visibleTextEditors.find(
+    (e) => e.document.uri.toString() === uri.toString()
+  );
+
+  return vscode.window.showTextDocument(uri, {
+    viewColumn: existingEditor?.viewColumn || vscode.ViewColumn.Active,
+  });
 }
