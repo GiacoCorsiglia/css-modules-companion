@@ -2,7 +2,7 @@
 	"name": "css-modules-companion",
 	"displayName": "CSS Modules Companion",
 	"description": "Utilities for working with CSS Modules",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"publisher": "GiacoCorsiglia",
 	"license": "MIT",
 	"engines": {
@@ -12,67 +12,51 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:css-modules-companion.openCorrespondingCssModule",
-		"onCommand:css-modules-companion.importCorrespondingCssModule",
-		"onCommand:css-modules-companion.openComponentForCorrespondingCssModule",
-		"onCommand:css-modules-companion.toggleBetweenComponentAndCssModule"
+		"onCommand:css-modules-companion.toggleBetweenComponentAndCssModule",
+		"onCommand:css-modules-companion.importCorrespondingCssModule"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
 		"configuration": {
 			"title": "CSS Modules Companion",
 			"properties": {
-				"css-modules-companion.fileType": {
-					"enum": ["css", "scss", "sass", "less"],
+				"css-modules-companion.fileExtension": {
+					"enum": [
+						"auto",
+						"css",
+						"scss",
+						"sass",
+						"less",
+						"styl"
+					],
+					"default": "auto",
+					"description": "The file extension to use when searching for or creating a corresponding CSS module file.  If set to \"auto\", the extension will attempt to identify whatever CSS preprocessor appears to be in use the current workspace."
+				},
+				"css-modules-companion.importName": {
 					"default": "css",
-					"description": "The type of CSS file that should be created or looked for."
+					"type": "string",
+					"markdownDescription": "The `$NAME` in `import $NAME from \"file.module.css\";`"
 				}
 			}
 		},
 		"commands": [
 			{
-				"command": "css-modules-companion.openCorrespondingCssModule",
-				"title": "Open Corresponding CSS Module",
-				"enablement": "editorTextFocus && (editorLangId == typescript || editorLangId == typescriptreact || editorLangId == javascript || editorLangId == javascriptreact)"
+				"command": "css-modules-companion.toggleBetweenComponentAndCssModule",
+				"title": "Toggle Between Component and Corresponding CSS Module",
+				"enablement": "editorTextFocus && (editorLangId == typescript || editorLangId == typescriptreact || editorLangId == javascript || editorLangId == javascriptreact || resourceFilename =~ /\\.module\\.(css|scss|sass|less|styl)$/)"
 			},
 			{
 				"command": "css-modules-companion.importCorrespondingCssModule",
 				"title": "Import Corresponding CSS Module",
 				"enablement": "editorTextFocus && (editorLangId == typescript || editorLangId == typescriptreact || editorLangId == javascript || editorLangId == javascriptreact)"
-			},
-			{
-				"command": "css-modules-companion.openComponentForCorrespondingCssModule",
-				"title": "Open Component for Corresponding CSS Module",
-				"enablement": "editorTextFocus && (editorLangId == css || editorLangId == scss || editorLangId == less)"
-			},
-			{
-				"command": "css-modules-companion.toggleBetweenComponentAndCssModule",
-				"title": "Toggle Between Component and Corresponding CSS Module",
-				"enablement": "editorTextFocus && (editorLangId == typescript || editorLangId == typescriptreact || editorLangId == javascript || editorLangId == javascriptreact || resourceFilename =~ /\\.module\\.(css|scss|sass|less)$/)"
 			}
 		],
-		"menus": {
-			"commandPalette": [
-				{
-					"command": "css-modules-companion.openCorrespondingCssModule",
-					"when": "editorTextFocus && (editorLangId == typescript || editorLangId == typescriptreact || editorLangId == javascript || editorLangId == javascriptreact)"
-				},
-				{
-					"command": "css-modules-companion.importCorrespondingCssModule",
-					"when": "editorTextFocus && (editorLangId == typescript || editorLangId == typescriptreact || editorLangId == javascript || editorLangId == javascriptreact)"
-				},
-				{
-					"command": "css-modules-companion.openComponentForCorrespondingCssModule",
-					"when": "editorTextFocus && (editorLangId == css || editorLangId == scss || editorLangId == less)"
-				}
-			]
-		},
 		"keybindings": [
 			{
-        "command": "css-modules-companion.toggleBetweenComponentAndCssModule",
+				"command": "css-modules-companion.toggleBetweenComponentAndCssModule",
 				"key": "ctrl+;",
 				"mac": "cmd+;",
-        "when": "editorTextFocus && (editorLangId == typescript || editorLangId == typescriptreact || editorLangId == javascript || editorLangId == javascriptreact || resourceFilename =~ /\\.module\\.(css|scss|sass|less)$/)"
+				"when": "editorTextFocus && (editorLangId == typescript || editorLangId == typescriptreact || editorLangId == javascript || editorLangId == javascriptreact || resourceFilename =~ /\\.module\\.(css|scss|sass|less|styl)$/)"
 			},
 			{
 				"command": "css-modules-companion.importCorrespondingCssModule",
