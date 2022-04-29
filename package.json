@@ -6,7 +6,7 @@
 	"publisher": "GiacoCorsiglia",
 	"license": "MIT",
 	"engines": {
-		"vscode": "^1.51.0"
+		"vscode": "^1.66.0"
 	},
 	"categories": [
 		"Other"
