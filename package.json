@@ -1,5 +1,5 @@
 {
-  "name": "css-modules-companion",
+	"name": "css-modules-companion",
 	"displayName": "CSS Modules Companion",
 	"description": "Utilities for working with CSS Modules",
 	"version": "0.0.2",
@@ -12,10 +12,10 @@
 		"Other"
 	],
 	"activationEvents": [
-    "onCommand:css-modules-companion.openCorrespondingCssModule",
+		"onCommand:css-modules-companion.openCorrespondingCssModule",
 		"onCommand:css-modules-companion.importCorrespondingCssModule",
 		"onCommand:css-modules-companion.openComponentForCorrespondingCssModule",
-    "onCommand:css-modules-companion.toggleBetweenComponentAndCssModule"
+		"onCommand:css-modules-companion.toggleBetweenComponentAndCssModule"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -52,7 +52,7 @@
 			}
 		],
 		"menus": {
-      "commandPalette": [
+			"commandPalette": [
 				{
 					"command": "css-modules-companion.openCorrespondingCssModule",
 					"when": "editorTextFocus && (editorLangId == typescript || editorLangId == typescriptreact || editorLangId == javascript || editorLangId == javascriptreact)"
@@ -65,42 +65,31 @@
 					"command": "css-modules-companion.openComponentForCorrespondingCssModule",
 					"when": "editorTextFocus && (editorLangId == css || editorLangId == scss || editorLangId == less)"
 				}
-      ]
+			]
 		},
 		"keybindings": [
-      {
+			{
         "command": "css-modules-companion.toggleBetweenComponentAndCssModule",
-        "key": "ctrl+;",
-        "mac": "cmd+;",
+				"key": "ctrl+;",
+				"mac": "cmd+;",
         "when": "editorTextFocus && (editorLangId == typescript || editorLangId == typescriptreact || editorLangId == javascript || editorLangId == javascriptreact || resourceFilename =~ /\\.module\\.(css|scss|sass|less)$/)"
-      },
-      {
-        "command": "css-modules-companion.importCorrespondingCssModule",
-        "key": "ctrl+shift+;",
-        "mac": "cmd+shift+;",
-        "when": "editorTextFocus && (editorLangId == typescript || editorLangId == typescriptreact || editorLangId == javascript || editorLangId == javascriptreact)"
+			},
+			{
+				"command": "css-modules-companion.importCorrespondingCssModule",
+				"key": "ctrl+shift+;",
+				"mac": "cmd+shift+;",
+				"when": "editorTextFocus && (editorLangId == typescript || editorLangId == typescriptreact || editorLangId == javascript || editorLangId == javascriptreact)"
 			}
-    ]
+		]
 	},
 	"scripts": {
 		"vscode:prepublish": "yarn run compile",
 		"compile": "tsc -p ./",
-		"watch": "tsc -watch -p ./",
-		"pretest": "yarn run compile && yarn run lint",
-		"lint": "eslint src --ext ts",
-		"test": "node ./out/test/runTest.js"
+		"watch": "tsc -watch -p ./"
 	},
 	"devDependencies": {
-		"@types/vscode": "^1.51.0",
-		"@types/glob": "^7.1.3",
-		"@types/mocha": "^8.0.0",
 		"@types/node": "^12.11.7",
-		"eslint": "^7.9.0",
-		"@typescript-eslint/eslint-plugin": "^4.1.1",
-		"@typescript-eslint/parser": "^4.1.1",
-		"glob": "^7.1.6",
-		"mocha": "^8.1.3",
-		"typescript": "^4.0.2",
-		"vscode-test": "^1.4.0"
+		"@types/vscode": "^1.66.0",
+		"typescript": "^4.6.4"
 	}
 }
