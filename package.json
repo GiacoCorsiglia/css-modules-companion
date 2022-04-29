@@ -5,6 +5,10 @@
 	"version": "0.0.3",
 	"publisher": "GiacoCorsiglia",
 	"license": "MIT",
+	"repository": {
+    "type": "git",
+    "url": "https://github.com/GiacoCorsiglia/css-modules-companion.git"
+	},
 	"engines": {
 		"vscode": "^1.66.0"
 	},
