@@ -4,7 +4,7 @@ Provides convenience commands for working with CSS modules.
 
 The main command is `toggleBetweenComponentAndCssModule`, which switches the editor focus between a JavaScript file and its corresponding CSS module file.  This command will create the CSS module file if it doesn't exist, and add an import statement to the JavaScript file.
 
-You can also use the `importCorrespondingCssModule` command to create the CSS module file and add the important statement without switching the editor focus.
+You can also use the `importCorrespondingCssModule` command to create the CSS module file and add the import statement without switching the editor focus.
 
 If you're working on `dir/file.jsx`, the corresponding CSS module will be identified as `dir/file.module.css` (with handling for TypeScript files and CSS Preprocessor extensions).
 
